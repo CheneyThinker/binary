@@ -3,9 +3,9 @@
 #include <string.h>
 
 int command(char** argv, unsigned char* address_display, unsigned char* char_display, int index) {
-  if (!strcasecmp(argv[index], "--address-display")) {
+  if (!strcasecmp(argv[index], "--address-display") || !strcasecmp(argv[index], "--a")) {
     *address_display = 0x01;
-  } else if (!strcasecmp(argv[index], "--char-display")) {
+  } else if (!strcasecmp(argv[index], "--char-display") || !strcasecmp(argv[index], "--c")) {
     *char_display = 0x01;
   } else {
     return -1;
@@ -14,13 +14,14 @@ int command(char** argv, unsigned char* address_display, unsigned char* char_dis
 }
 
 void command_table() {
-  printf("--------------command table----------------------------------\n");
-  printf("|./jbyte [optional] filePath                                |\n");
-  printf("|optional:                                                  |\n");
-  printf("|         --address-display                                 |\n");
-  printf("|         --char-display                                    |\n");
-  printf("|         --word-number numberOfWord(can be adjust)         |\n");
-  printf("-------------------------------------------------------------\n");
+  printf("Usage: ./jbyte [options] [filePath]\n");
+  printf("Options:\n");
+  printf("  --h, --help                     Print this message and exit.\n");
+  printf("  --a, --address-display          Print address offset.\n");
+  printf("  --c, --char-display             Print char text.\n");
+  printf("  --w, --word-number numberOfWord 2^(4 + n) n = 0, 1, 2, ...\n");
+  printf("author: CheneyThinker\n");
+  printf("e-mail: clxuanye@163.com\n");
 }
 
 int main(int argc, char** argv)
@@ -43,39 +44,39 @@ int main(int argc, char** argv)
     filePath = argv[2];
   } else if (argc == 4) {
     if (command(argv, &address_display, &char_display, 0x00000001)) {
-      if (!strcasecmp(argv[0x00000001], "--word-number") && (byteOfLine = atoi(argv[0x00000002]))) {
+      if ((!strcasecmp(argv[0x00000001], "--word-number") || !strcasecmp(argv[0x00000001], "--w")) && (byteOfLine = atoi(argv[0x00000002]))) {
       } else {
         command_table();
         return 0;
       }
     }
-    if (strcasecmp(argv[0x00000001], "--word-number") && command(argv, &address_display, &char_display, 0x00000002)) {
+    if (strcasecmp(argv[0x00000001], "--word-number") && strcasecmp(argv[0x00000001], "--w") && command(argv, &address_display, &char_display, 0x00000002)) {
       command_table();
       return 0;
     }
     filePath = argv[3];
   } else if (argc == 5) {
     if (command(argv, &address_display, &char_display, 0x00000001)) {
-      if (!strcasecmp(argv[0x00000001], "--word-number") && (byteOfLine = atoi(argv[0x00000002]))) {
+      if ((!strcasecmp(argv[0x00000001], "--word-number") || !strcasecmp(argv[0x00000001], "--w")) && (byteOfLine = atoi(argv[0x00000002]))) {
       } else {
         command_table();
         return 0;
       }
     }
-    if (!strcasecmp(argv[0x00000001], "--word-number")) {
+    if (!strcasecmp(argv[0x00000001], "--word-number") || !strcasecmp(argv[0x00000001], "--w")) {
       if (command(argv, &address_display, &char_display, 0x00000003)) {
         command_table();
         return 0;
       }
     } else {
       if (command(argv, &address_display, &char_display, 0x00000002)) {
-        if (!strcasecmp(argv[0x00000002], "--word-number") && (byteOfLine = atoi(argv[0x00000003]))) {
+        if ((!strcasecmp(argv[0x00000002], "--word-number") || !strcasecmp(argv[0x00000002], "--w")) && (byteOfLine = atoi(argv[0x00000003]))) {
         } else {
           command_table();
           return 0;
         }
       }
-      if (strcasecmp(argv[0x00000002], "--word-number") && command(argv, &address_display, &char_display, 0x00000003)) {
+      if (strcasecmp(argv[0x00000002], "--word-number") && strcasecmp(argv[0x00000002], "--w") && command(argv, &address_display, &char_display, 0x00000003)) {
         command_table();
         return 0;
       }
@@ -83,13 +84,13 @@ int main(int argc, char** argv)
     filePath = argv[4];
   } else if (argc == 6) {
     if (command(argv, &address_display, &char_display, 0x00000001)) {
-      if (!strcasecmp(argv[0x00000001], "--word-number") && (byteOfLine = atoi(argv[0x00000002]))) {
+      if ((!strcasecmp(argv[0x00000001], "--word-number") || !strcasecmp(argv[0x00000001], "--w")) && (byteOfLine = atoi(argv[0x00000002]))) {
       } else {
         command_table();
         return 0;
       }
     }
-    if (!strcasecmp(argv[0x00000001], "--word-number")) {
+    if (!strcasecmp(argv[0x00000001], "--word-number") || !strcasecmp(argv[0x00000001], "--w")) {
       if (command(argv, &address_display, &char_display, 0x00000003)) {
         command_table();
         return 0;
@@ -100,20 +101,20 @@ int main(int argc, char** argv)
       }
     } else {
       if (command(argv, &address_display, &char_display, 0x00000002)) {
-        if (!strcasecmp(argv[0x00000002], "--word-number") && (byteOfLine = atoi(argv[0x00000003]))) {
+        if ((!strcasecmp(argv[0x00000002], "--word-number") || !strcasecmp(argv[0x00000002], "--w")) && (byteOfLine = atoi(argv[0x00000003]))) {
         } else {
           command_table();
           return 0;
         }
       }
-      if (!strcasecmp(argv[0x00000002], "--word-number")) {
+      if (!strcasecmp(argv[0x00000002], "--word-number") || !strcasecmp(argv[0x00000002], "--w")) {
         if (command(argv, &address_display, &char_display, 0x00000004)) {
           command_table();
           return 0;
         }
       } else {
         if (command(argv, &address_display, &char_display, 0x00000003)) {
-          if (!strcasecmp(argv[0x00000003], "--word-number") && (byteOfLine = atoi(argv[0x00000004]))) {
+          if ((!strcasecmp(argv[0x00000003], "--word-number") || !strcasecmp(argv[0x00000003], "--w")) && (byteOfLine = atoi(argv[0x00000004]))) {
           } else {
             command_table();
             return 0;
