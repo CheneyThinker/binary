@@ -1,1 +1,1 @@
-# gcc -o byte byte.c
+# gcc -o binary binary.c
